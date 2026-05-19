@@ -17,6 +17,12 @@
       "source": "./plugins/cowork-life",
       "description": "4 personal wellness skills — running coach, triathlon coach, meal planning, and morning routine planning.",
       "version": "1.0.0"
+    },
+    {
+      "name": "cowork-utils",
+      "source": "./plugins/cowork-utils",
+      "description": "7 utility skills — deploy artifacts, generate images, send messages, write plans, implement plans, deep research, and continual learning.",
+      "version": "1.0.0"
     }
   ]
 }

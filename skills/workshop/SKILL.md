@@ -17,6 +17,28 @@ Ask:
 4. Remote or in-person? (affects tools and pacing)
 5. Any specific activities already in mind?
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `use-figjam` | Optional | Set up remote FigJam boards for collaborative activities |
+| `meeting-note-sync` | Optional | Extract actions and decisions after the session |
+| `plan-implement` | Optional | Turn workshop outcomes into a phased execution plan |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| `threads/[client]/projects/[project]/decisions.md` | Optional | Log decisions from the session (confirm before write) |
+| `threads/[client]/projects/[project]/current-phase.md` | Optional | Capture status changes surfaced in the workshop |
+| None | — | Agenda and facilitation guides can be delivered in chat only |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| None | — | Written agenda, activity guides, and timing tables |
+| Figma MCP (FigJam) | Optional | Via `use-figjam` for remote boards (`use_figma`, `get_figjam`) |
+
 ## Workshop design principles
 
 - **Start with the output** — design backwards from what you need at the end

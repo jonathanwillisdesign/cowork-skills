@@ -16,6 +16,29 @@ Ask:
 3. Any brand or style constraints to respect?
 4. Are there competitors or reference products to prioritise?
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `raindrop-bookmarks` | Optional | Search saved design references first |
+| `defuddle-n8n` | Optional | Extract clean content from reference URLs |
+| `client-resources` | Optional | Brand and style constraints before curating references |
+| `competitor-research` | Optional | Competitive UX benchmarks when landscape is unclear |
+| `prototype-no-fi` | Optional | Follow-on — sketch concepts after direction is chosen |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| None | — | References are external; optional `client_context` from orchestrator |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| Web search | Yes | Mobbin, Dribbble, Behance, and product examples |
+| n8n MCP | Optional | Via `defuddle-n8n` for page extraction |
+| `WebFetch` | Optional | Fallback when `defuddle-n8n` fails |
+
 ## Workflow
 
 1. **Search bookmarks first** — use `raindrop-bookmarks` to search saved design references

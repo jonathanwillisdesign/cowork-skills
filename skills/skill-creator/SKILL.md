@@ -7,6 +7,49 @@ description: Create new skills, build skill systems, modify and improve existing
 
 A skill for creating new skills and iteratively improving them.
 
+## When to use
+
+- Creating, improving, or benchmarking a single skill or a multi-skill orchestrator.
+- Running evals, description optimisation, or packaging readiness review.
+
+**Use this instead when:** the user only needs to run an existing workflow skill (e.g. `figma-design`, `deep-research`) — do not invoke skill-creator for normal task execution.
+
+**Standard shape:** all new and refined skills must follow [references/standard-skill-shape.md](references/standard-skill-shape.md) (sections, guardrails, evals, overlap notes).
+
+## Inputs
+
+Ask only for what is missing: skill goal, trigger phrases, orchestrator vs child role, existing draft path, and whether evals already exist.
+
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `client-resources` | Optional | When scaffolding skill systems with client-specific child steps |
+| Target skills under test | Optional | Skills being created, improved, or benchmarked |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| `references/standard-skill-shape.md` | Yes | Canonical section order and guardrails |
+| `references/existing-skills.md` | Yes | Reuse registry before creating parallel skills |
+| `references/taxonomy.md` | Conditional | Skill-system decomposition |
+| `references/skill-patterns.md` | Conditional | Child/orchestrator SKILL.md templates |
+| `references/schemas.md` | Conditional | Eval and benchmark JSON shapes |
+| `evals/evals.json` | Optional | Test prompts per skill |
+| `[skill-name]-workspace/` | Optional | Iteration runs, benchmarks, viewer output |
+| `eval-viewer/generate_review.py` | Optional | Human review of eval outputs |
+| `scripts/aggregate_benchmark`, `scripts.run_loop` | Optional | Benchmark aggregation and description optimization |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| Python 3 | Yes | Eval viewer, packaging, benchmark scripts |
+| Subagents (Task tool) | Optional | Parallel with-skill / baseline eval runs |
+| `claude -p` CLI | Optional | Description optimization loop (`run_loop.py`) |
+| Browser / `open` | Optional | Eval review HTML; use `--static` in headless Cowork |
+| `present_files` | Optional | Package `.skill` artifact when available |
+
 At a high level, the process of creating a skill goes like this:
 
 - Decide what you want the skill to do and roughly how it should do it
@@ -493,6 +536,28 @@ If you're in Cowork, the main things to know are:
 
 ---
 
+## Output
+
+- Draft or updated `skills/[name]/SKILL.md` following [references/standard-skill-shape.md](references/standard-skill-shape.md)
+- Optional `evals.json`, benchmark outputs, and packaged `.skill` / plugin symlink guidance
+- Description optimisation report when requested
+
+## Guardrails
+
+- **Confirmations:** Do not package a skill into a plugin symlink until the user has reviewed it and lightweight evals exist.
+- **Assumptions:** Do not invent eval results, benchmark scores, or user approval.
+- **Tool fallbacks:** If `claude -p` or eval scripts are unavailable, run manual review with the user instead of skipping quality checks silently.
+
+## Follow-on skills
+
+- After creating a skill, point the user to commit/push in this repo and update [PACKAGE-MATRIX.md](../../PACKAGE-MATRIX.md) when changing `included` status.
+
+## Lightweight evals
+
+1. "Create a new skill that summarises meeting notes into our thread format."
+2. "Improve the description on raindrop-bookmarks so it stops triggering for general web search."
+3. "Run the full eval loop on figma-design." (near-miss — only if user owns that skill; otherwise clarify scope)
+
 ## Reference files
 
 The agents/ directory contains instructions for specialized subagents. Read them when you need to spawn the relevant subagent.
@@ -506,6 +571,7 @@ The references/ directory has additional documentation:
 - `references/taxonomy.md` — three-tier skill system model and context injection pattern (read before creating a skill system)
 - `references/existing-skills.md` — registry of shared child skills and orchestrators available to reuse
 - `references/skill-patterns.md` — SKILL.md templates for child skills and orchestrators
+- `references/standard-skill-shape.md` — required section order, guardrails, evals, overlap routing
 
 ---
 

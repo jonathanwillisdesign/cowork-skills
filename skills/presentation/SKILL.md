@@ -18,6 +18,31 @@ Ask:
 5. Is there existing content to draw from? (brief, research, project thread)
 6. What do you want the audience to feel, think, or do at the end?
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `client-resources` | Optional | Brand voice, visuals, and client constraints for client-facing decks |
+| `defuddle-n8n` | Optional | Extract content from briefs, articles, or URLs the deck should reference |
+| `accessibility-review` | Optional | Contrast and text-size check on visual slides before handoff |
+| `deploy-artifact` | Optional | Publish HTML or shareable deck URL after build |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| `threads/[client]/projects/[project]/` | Optional | Brief, research, or thread context when drawing from a project |
+| `threads/[client]/projects/[project]/outputs/` | Optional | Save finished deck per project outputs convention |
+| `client_context` (from orchestrator) | Optional | Pre-loaded client brand/tone — do not re-run `client-resources` if already passed |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| None | — | Markdown outline and speaker notes need no external tools |
+| Figma MCP (Slides) | Optional | Build or edit decks in Figma Slides when user requests that format |
+| Google Slides / Keynote | Optional | User-directed export or manual build outside the agent |
+| Web search | Optional | Fill gaps when the deck needs facts not in provided materials |
+
 ## Slide design principles
 
 - **One idea per slide** — if a slide has two ideas, it should be two slides

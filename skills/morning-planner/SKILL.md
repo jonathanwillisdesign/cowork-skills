@@ -17,6 +17,27 @@ Ask:
 4. Is there a training session today? (factor into energy planning and timing)
 5. Any energy or focus concerns? (tired, anxious, scattered, unmotivated)
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `daily-briefing` | Optional | 5–10 minute orientation on priorities and project urgencies before deep work |
+| `endurance-coach` | Optional | Factor today's training session into timing and energy planning |
+| `meal-planning` | Optional | Breakfast timing when nutrition goals affect the morning |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| None | — | Morning plan is generated from user input and conversation context |
+| Tana | Optional | Note the daily intention when the user wants ongoing tracking |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| None | — | No integrations required |
+| Things / Tana | Optional | Cross-check fixed commitments or tasks when connected |
+
 ## Designing the morning
 
 ### Non-negotiables first

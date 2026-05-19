@@ -1,3 +1,17 @@
+## Workspace configuration
+
+At session start, read **[`skills-config.md`](skills-config.md)** in this repo.
+
+That file explains and defines:
+
+- **Workspace root** — base for `threads/`, tools, and paths
+- **Memory** — where `continual-learning` stores durable preferences (usually this file)
+- **Client context** — per-client source: local markdown folders, Notion, Tana, Google Docs, or paste
+
+Do not hardcode Cowork `threads/` paths when `skills-config.md` points elsewhere. Connection details belong in `skills-config.md`, not in learned bullets below.
+
+---
+
 ## Learned User Preferences
 
 - Only symlink a skill into a plugin package after it has been reviewed and refined; keep unrefined skills in root `skills/` only.

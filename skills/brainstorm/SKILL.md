@@ -16,6 +16,27 @@ Ask:
 3. How many ideas? (default: 10–15; more for early exploration)
 4. Output format? (list / FigJam board via `use-figjam` / Tana node)
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `use-figjam` | Optional | Brainstorm board with stickies, timers, and dot voting |
+| `client-resources` | Optional | Brand, technical, or project constraints when ideating for a client |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| `client_context` (from orchestrator) | Optional | Constraints passed from `client-resources` without reloading |
+| None | — | Ideas can be delivered as markdown in chat |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| None | — | Structured idea list and HMW framing in chat |
+| Figma MCP (FigJam) | Optional | Via `use-figjam` when output format is a FigJam board |
+| Tana | Optional | Save ideas to a Tana node when user requests that output |
+
 ## First: reframe as a "How Might We" question
 
 Convert any problem into HMW form before generating ideas.

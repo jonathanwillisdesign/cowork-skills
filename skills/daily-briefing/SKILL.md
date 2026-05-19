@@ -8,6 +8,26 @@ description: >
 
 Generate a clear, scannable briefing for the start of the work day. The goal is to orient quickly — what's active, what's urgent, what to focus on first.
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| None | — | Reads project thread files directly; no orchestrator skills required |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| `threads/_INDEX.md` | Yes | List active projects and their folder paths |
+| `threads/[client]/projects/[project]/current-phase.md` | Yes | Open actions and live status per active project |
+| `threads/[client]/projects/[project]/decisions.md` | Optional | Pending decisions that need input today |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| None | — | Briefing is assembled from local thread files only |
+| Things / Tana | Optional | User may ask to merge live tasks — only if connected; not required by default workflow |
+
 ## Workflow
 
 1. Read `threads/_INDEX.md` — get the list of active projects

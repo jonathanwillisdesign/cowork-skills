@@ -8,6 +8,12 @@ description: >
 
 Create practical endurance training plans for running-only goals and multi-sport goals. Manage total training load first, then shape the sessions around the athlete's event, current fitness, constraints, and recovery.
 
+## When to use
+
+- Running, triathlon, duathlon, or multi-sport training plans, pacing, load management, and coaching check-ins.
+
+**Use this instead when:** the user only wants meal timing around training (`meal-planning`) or daily schedule placement (`morning-planner`) without a training plan.
+
 ## Inputs
 
 Ask only for what is missing:
@@ -18,6 +24,26 @@ Ask only for what is missing:
 4. **Availability** — realistic hours per week, training days, fixed commitments, travel, pool access, bike access, and preferred rest day.
 5. **Health and injury context** — current pain, recent injuries, niggles, fatigue, sleep, and areas to protect.
 6. **Weakest discipline or limiter** — endurance, speed, technique, consistency, confidence, fuelling, or transitions.
+
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `meal-planning` | Optional | Align meals with long, hard, or recovery training days |
+| `morning-planner` | Optional | Place sessions into the morning or daily schedule |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| None | — | Plans use user-reported volume, RPE, and constraints |
+| Tana / Things | Optional | Log or track the week when the user requests and tools are connected |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| None | — | No training-data integrations required |
+| Things / Tana | Optional | Read schedule context only if available — do not invent logged workouts |
 
 ## Workflow
 
@@ -108,6 +134,8 @@ Always include:
 
 ## Guardrails
 
+- **Tool fallbacks:** No training-data integrations required; use user-reported volume and RPE. If the user references Things/Tana for schedule, read only if available — do not invent logged workouts.
+- **Confirmations:** Do not write plans to project files or Tana without explicit user approval.
 - This is coaching guidance, not medical advice. For sharp pain, worsening pain, chest symptoms, dizziness, or injury concerns, advise stopping and seeking qualified medical or physiotherapy support.
 - For return-to-run plans, prioritise consistency, pain response, and walk/run progression over speed.
 - Do not prescribe aggressive volume jumps just because the event is close.

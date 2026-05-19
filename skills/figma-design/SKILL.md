@@ -10,9 +10,59 @@ You are a senior UX/UI designer working directly in Figma via `figma-console` MC
 
 > For setup, discovery, registry format, naming conventions, and YAML schema: see `SKILL-reference.md` in this folder.
 
----
+## When to use
 
-## Step 0: Orient (load only what you need)
+- Creating or editing screens in Figma from an existing project design system, registry, or file URL.
+
+**Use this instead when:**
+
+| Intent | Use | Instead of |
+|--------|-----|------------|
+| Low-fidelity concepts (no design system) | `prototype-no-fi` | `figma-design` |
+| Greyscale structure / wireframes | `prototype-wireframe` | `figma-design` |
+| Hi-fi from approved wireframes | `prototype-hi-fi` | `figma-design` |
+| Polish pass on existing frames | `figma-polish` | `figma-design` |
+| FigJam workshops / diagrams | `use-figjam` | `figma-design` |
+| Load client brand/tokens once for a workflow | `client-resources` | Re-reading `threads/` in every step |
+
+## Inputs
+
+Ask only for what is missing:
+
+1. **Project name** — maps to design-system folder and registry
+2. **Figma file** — URL or file key from `overview.md`
+3. **Task** — new screen, update screen, registry refresh, or discovery
+4. **`client_context`** — if an orchestrator already loaded it, use that; otherwise offer `client-resources` once at workflow start
+
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `client-resources` | Optional | Load `client_context` once at workflow start when brand or project resources are needed |
+| `accessibility-review` | Optional | After significant new UI is composed |
+| `figma-polish` | Optional | Visual refinement pass on existing frames |
+| `prototype-hi-fi` / `prototype-wireframe` / `prototype-no-fi` | Optional | When fidelity stage should change before design-system composition |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| `Cowork/design-systems/[project]/overview.md` | Yes* | Project context, platform, screen sizes, Figma file key (*or equivalent under `threads/`) |
+| `threads/[client]/resources/design-system/` | Optional | Cowork threads layout when the project uses it |
+| Component registry (`components.yaml`, `components/index.yaml`, or `components.md`) | Yes* | Component keys, variants, and deprecation notes (*when creating or editing screens) |
+| `patterns.md`, `tokens.md`, `copywriting.md`, etc. | Optional | Load on demand per task (see Workflow step 0) |
+| `SKILL-reference.md` | Optional | Setup, discovery, and registry refresh |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| `figma-console` MCP (or Figma MCP) | Yes | Execute design changes, import components, screenshots |
+| Figma Desktop + Desktop Bridge plugin | Yes | Required for `figma_execute` and live file access |
+| — | — | If Figma MCP is unavailable, stop and tell the user — do not recreate screens in code unless asked |
+
+## Workflow
+
+### Step 0: Orient (load only what you need)
 
 Read files from `Cowork/design-systems/[project-name]/` in this order — **stop loading once you have what the task requires**:
 
@@ -175,3 +225,28 @@ Examples: `Patient Dashboard — Default` · `Checkout Step 2 — Filled` · `Ad
 | Find where a screen sits in the product | `architecture.md` |
 | Understand why a decision was made | `decisions.md` |
 | Set up a new project or refresh the registry | `SKILL-reference.md` |
+
+## Output
+
+- Updated Figma frames using design-system components and tokens (not ad-hoc styling)
+- Screen names following `[Screen Name] — [State]`
+- Short summary: what changed, which components/variants were used, and any assumptions
+
+## Guardrails
+
+- **Confirmations:** Get explicit user approval before destructive edits, bulk deletes, or publishing/sharing file changes outside the team norm.
+- **Tool fallbacks:** If `figma-console` / Figma MCP is unavailable, stop and tell the user — do not recreate screens in code unless they ask for implementation instead.
+- **Assumptions:** Do not invent components, tokens, or registry entries; if the registry is missing, run discovery or ask the user.
+- **Design system paths:** Prefer `threads/[client]/resources/design-system/` when the project uses Cowork threads; legacy `Cowork/design-systems/[project]/` may still exist — load whichever the project's `overview.md` references.
+
+## Follow-on skills
+
+- `accessibility-review` — after significant new UI is composed
+- `figma-polish` — visual refinement pass on existing frames
+- `prototype-hi-fi` / `prototype-wireframe` — when fidelity stage should change
+
+## Lightweight evals
+
+1. "Create a patient dashboard default state in the Aflo Figma file using the design system."
+2. "Refresh the GTS component registry from the open Figma file — I only need the navigation category updated."
+3. "Sketch three rough layout ideas for checkout in Figma." (near-miss — route to `prototype-no-fi`, not this skill)

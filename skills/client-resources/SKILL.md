@@ -1,79 +1,131 @@
 ---
 name: client-resources
-description: Loads brand, design system, and project resources for the active client from the Cowork workspace and returns structured client_context. Use at the start of any workflow that needs client-specific context — brand voice, tone, design tokens, naming conventions, or visual guidelines. Orchestrators call this first and pass the output downstream; child skills receive client_context as a parameter and never call this themselves.
-compatibility: Designed for Cowork. Reads from Cowork/threads/[client]/resources/.
-metadata:
-  author: bigmotive
-  version: "1.0"
+description: >
+  Use when a workflow needs client-specific brand, design system, or project resources — load once, return structured client_context for downstream skills. Works with configurable workspace layouts (Cowork threads/, explicit folders, or pasted context). Orchestrators call this first; child skills receive client_context and never reload unless asked.
 ---
 
 # Client Resources
 
-Loads everything in `threads/[client]/resources/` and returns it as structured `client_context` for use by context-injected child skills downstream.
+Load client-specific reference material once and return a **stable `client_context` block** for context-injected child skills. Workspace layout is pluggable via **providers**; downstream skills only see the normalized output.
 
-This is the bridge between the client-specific content stored in the Cowork workspace and the generic shared skills that consume it. Called once at the start of an orchestrator — never called by child skills themselves.
+**Orchestrator-only** — call at workflow start; pass `client_context` as a parameter. Child skills must not reload client files unless the user explicitly asks to refresh.
 
----
+## When to use
 
-## Instructions
+- An orchestrator or user needs brand voice, design tokens, guidelines, or client assets before design/copy/audit steps.
+- Switching clients mid-session — re-run this skill once; do not re-read source folders in every child step.
 
-### 1. Identify the active client
+**Use this instead when:**
 
-Determine which client this run is for:
+| Situation | Use instead |
+|-----------|-------------|
+| Single known file | Read that file directly |
+| Figma-only task with a file URL | `figma-design` |
+| Cross-chat plan files | `plan-workflow` |
+| User pasted context already in chat | Skip load; wrap paste in `client_context` format |
 
-1. Check if the orchestrator or user has specified a client name explicitly in this session
-2. If not, read `threads/_INDEX.md` and list active projects — ask the user which client to load
+## Inputs
 
-Valid client names match the top-level folder names in `threads/`:
+Ask only for what is missing:
 
-| Client | Folder |
-|---|---|
-| Adidas | `threads/adidas/` |
-| Aflo | `threads/aflo/` |
-| Big Motive (internal) | `threads/bigmotive/` |
-| SLI | `threads/sli/` |
-| Personal / Portfolio | `threads/personal/` |
+| Input | Required | Notes |
+|-------|----------|--------|
+| **Provider** | No | Auto-detect; see Workflow step 1 |
+| **Client or display name** | Yes* | *Or resolvable path |
+| **Resources path** | No | Required for `explicit-path`; inferred for `cowork-threads` |
+| **Scope** | No | Subset of sections: brand, design-system, logos, other |
 
-### 2. Load resources
+**Workspace config:** edit repo-root [`skills-config.md`](../../skills-config.md) (clients table + source types). Optional per-skill override: `assets/client-resources.local.yaml`.
 
-Read all files found in `threads/[client]/resources/`. Load in this priority order — higher items are most likely to be needed by downstream skills:
+## Dependencies
 
-1. `brand/` — tone of voice, writing style, brand guidelines, colour palette
-2. `design-system/` — design tokens, components, patterns, usage rules. If an `overview.md` exists, read that first; load detail files only if a downstream skill specifically needs them
-3. `logos/` — brand mark usage rules (load descriptions, skip binary files)
-4. Any other subdirectories present — load index or overview files first
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| None | — | Orchestrator-only; downstream skills receive `client_context` as input |
 
-If a directory is large (overview file > 300 lines), note that detailed reference is available and summarise key points rather than loading everything verbatim.
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| `references/client-context-schema.md` | Yes | Output contract and section mapping |
+| `references/providers/cowork-threads.md` or `references/providers/explicit-path.md` | Conditional | Provider resolution when auto-detected or user-specified |
+| `skills-config.md` (repo root) | Optional | Default provider + per-client Notion/Tana/Docs/local paths |
+| `assets/client-resources.local.yaml` | Optional | Legacy per-skill override |
+| `threads/[client]/resources/` | Optional | `local-threads` provider via config |
+| User-supplied resources directory | Optional | `explicit-path` provider root |
 
-### 3. Return client_context
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| None | — | Read-only filesystem load; no MCP required |
 
-Structure the loaded content as a clearly labelled `client_context` block:
+## Workflow
 
-```
-CLIENT CONTEXT — [Client Name]
-Loaded: [comma-separated list of sections successfully loaded]
-Missing: [any expected sections not found]
+### 1. Load workspace config
 
-## Brand
-[brand guidelines content]
+1. Read [`skills-config.md`](../../skills-config.md) at repo root (or path in `COWORK_SKILLS_CONFIG`).
+2. Resolve **client** from the **Clients** table → **Source type** + **Connection**. If unknown, list configured clients or ask.
+3. If no config file: fall back to `assets/client-resources.local.yaml`, then auto-detect `threads/`, then ask.
 
-## Design System
-[design system overview — or note that detail is in references/]
+### 2. Run the provider adapter
 
-## [Other sections]
-[content as found]
-```
+| Config `type` | Adapter |
+|---------------|---------|
+| `local-threads` | [cowork-threads.md](references/providers/cowork-threads.md) |
+| `local-files` | [explicit-path.md](references/providers/explicit-path.md) |
+| `notion` | [notion.md](references/providers/notion.md) |
+| `tana` | [tana.md](references/providers/tana.md) |
+| `google-docs` | [google-docs.md](references/providers/google-docs.md) |
+| `paste` | Structure user paste into schema (no fetch) |
 
-Pass this block directly to the next skill in the orchestrator sequence.
+User-supplied path at runtime overrides `local-files` path when provided in chat.
 
----
+### 3. Load and map sections
 
-## Edge cases
+1. Load files per provider mapping and [client-context-schema.md](references/client-context-schema.md) loading rules
+2. Prefer overview/index files; summarise large trees; skip binaries and secrets
+3. Record `Loaded` / `Missing` / `Sources` in the output header
 
-**No resources folder exists for the client** — Return a minimal context block with just the client name. Note clearly that context-injected child skills downstream will have limited information to work with and their output may be more generic as a result.
+### 4. Return client_context
 
-**Partial resources** — Load what exists. Note which expected sections (brand, design-system) are missing so downstream skills know what they're working without. Don't error — degrade gracefully.
+Emit the block defined in [references/client-context-schema.md](references/client-context-schema.md) and pass it to the next orchestrator step.
 
-**Personal projects** — `threads/personal/resources/` contains Jonny's own brand, portfolio assets, and style preferences. Load and treat the same as any client context.
+**Empty or missing root** — Return minimal `client_context` (name + `Missing: all`). Ask the user to fix `skills-config.md`, provide a path, or paste brand/design notes. Do not invent guidelines.
 
-**Large design system** — If the design system has many component files, load `design-system/overview.md` (or equivalent index) and note the full detail is available. A downstream skill like `figma-audit` can request specific component detail if needed.
+**User paste fallback** — If no filesystem layout is available, structure their paste into the same schema sections.
+
+## Output
+
+See [references/client-context-schema.md](references/client-context-schema.md). The orchestrator passes the full markdown block as `client_context` to the next skill.
+
+## Guardrails
+
+- **Orchestrator-only:** Children accept `client_context`; they do not call this skill or re-scan disks unless the user requests a refresh.
+- **Assumptions:** Do not invent brand rules, tokens, or file contents. List gaps under `Missing:`.
+- **Confirmations:** Read-only by default. No writes to workspace, Notion, or `threads/` without explicit user approval.
+- **Tool fallbacks:** No provider resolved → ask for path or paste. Partial load → proceed with `Missing:` noted. No MCP required.
+
+## Follow-on skills
+
+Pass `client_context` to context-injected skills (`figma-design`, `ux-writing`, `prototype-*`, `deploy-artifact` when client-facing, etc.). Include which sections loaded so children can request deeper files only if needed.
+
+## Lightweight evals
+
+1. **Should trigger:** "Load brand and design system for the Aflo client before we write UI copy." (cowork-threads or configured workspace)
+2. **Should trigger:** "Here's our client folder — `/projects/acme/brand-guidelines` — load context from there." (explicit-path)
+3. **Near-miss:** "Update `threads/adidas/projects/gts/context.md` with today's decisions." — project memory write, not this skill.
+
+## References
+
+| File | Purpose |
+|------|---------|
+| [references/client-context-schema.md](references/client-context-schema.md) | Output contract |
+| [references/providers/cowork-threads.md](references/providers/cowork-threads.md) | Cowork `threads/[client]/resources/` adapter |
+| [references/providers/explicit-path.md](references/providers/explicit-path.md) | Local folder adapter (`local-files`) |
+| [references/providers/notion.md](references/providers/notion.md) | Notion MCP |
+| [references/providers/tana.md](references/providers/tana.md) | Tana |
+| [references/providers/google-docs.md](references/providers/google-docs.md) | Google Docs |
+| [skills-config.md](../../skills-config.md) | Root workspace config |
+| [assets/client-resources.local.yaml.example](assets/client-resources.local.yaml.example) | Optional per-skill override |
+
+**Adding a provider:** Add `references/providers/your-provider.md` (detection, paths, folder → section map). Keep SKILL.md orchestration-only; do not fork the skill per workspace.

@@ -17,6 +17,29 @@ Ask:
 4. How long is the session?
 5. Is there an existing FigJam file to add to, or start fresh?
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `workshop` | Optional | Parent skill — full session design before board setup |
+| `brainstorm` | Optional | Parent skill — ideation output routed to FigJam |
+| `meeting-note-sync` | Optional | Extract actions after a facilitated session |
+| `plan-workflow` | Optional | Persist outcomes as a cross-chat plan file |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| FigJam file URL or file key | Optional | Open or extend an existing board instead of creating new |
+| `threads/[client]/projects/[project]/decisions.md` | Optional | Log session decisions (confirm before write) |
+| None | — | Board structure can be created without Cowork thread files |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| Figma MCP (FigJam) | Yes | Create boards, sections, stickies, timers (`use_figma`, `get_figjam`, `generate_diagram`) |
+| Figma MCP (Design) | Optional | `create_new_file` when starting a new FigJam file from scratch |
+
 ## Session templates by type
 
 ### Brainstorm board

@@ -15,6 +15,26 @@ Ultra-fast concept sketches for ideation. The point is breadth and speed — exp
 - When the problem isn't yet well understood and you need to think through drawing
 - When you want to validate a structural idea before investing in a wireframe
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `figma-design` | Optional | Rough frames in Figma (Option B) |
+| `client-resources` | Optional | Load `client_context` when exploring concepts for a named client |
+| `prototype-wireframe` | Optional | Follow-on after a direction is chosen |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| None | — | ASCII concepts need no files; optional `client_context` from orchestrator |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| None | — | ASCII layout works without tools |
+| Figma MCP | Optional | Via `figma-design` for rough blue/grey frames |
+
 ## Rule: Concepts must be genuinely different
 
 If two concepts are just variations of the same layout with a button moved, merge them. Good no-fi output shows three *fundamentally different structural approaches* — e.g. card-based vs. list vs. dashboard vs. conversational vs. step-by-step.

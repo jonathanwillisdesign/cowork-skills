@@ -18,6 +18,28 @@ Build polished, high-fidelity prototypes using real components from the project'
    - Is there a wireframe or flow to follow?
    - Any specific states to show? (default / loading / error / empty)
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `client-resources` | Yes | Load design system, tokens, and brand context |
+| `figma-design` | Yes | Connect to Figma and place library components |
+| `prototype-wireframe` | Optional | Structure and flow to implement |
+| `accessibility-review` | Optional | Follow-on audit before handoff |
+| `ux-writing` | Optional | Follow-on copy for labels, states, and CTAs |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| `threads/[client]/resources/design-system/` | Optional | Via `client-resources` — component registry and tokens |
+| Figma file URL | Yes | Target file for hi-fi frames |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| Figma MCP | Yes | Import components, build frames, capture screenshots |
+
 ## Workflow
 
 ### Step 1: Set up the frame

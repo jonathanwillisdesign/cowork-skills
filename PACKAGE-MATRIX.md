@@ -61,6 +61,7 @@ Single source of truth for which root skills ship in which plugin. **Only symlin
 | `plan-implement` | included | cowork-utils |
 | `plan-write` | included | cowork-utils |
 | `send-message` | included | cowork-utils |
+| `topic-digest` | refine-first | — |
 | `daily-briefing` | refine-first | — |
 | `meeting-note-sync` | refine-first | — |
 

@@ -1,6 +1,6 @@
 # Skill Writing Patterns
 
-Templates and principles for writing consistent skills in this system. Use alongside the [agentskills.io specification](https://agentskills.io/specification).
+Templates and principles for writing consistent skills in this system. Use alongside the [agentskills.io specification](https://agentskills.io/specification) and [standard-skill-shape.md](standard-skill-shape.md) (required section order, guardrails, evals, and overlap routing).
 
 ---
 
@@ -58,7 +58,7 @@ Run this once before first use. Answers are saved to `assets/config.md`.
 
 ## Sequence
 
-1. **client-resources** — load `client_context` from `threads/[client]/resources/`
+1. **client-resources** — load `client_context` via configured provider (see `client-resources/references/providers/`)
 2. **[child-skill-name]** (`input`, `client_context`) — [what it does] → [what it returns]
 3. **[next-skill]** ([previous output]) — [what it does] → [what it returns]
 ...

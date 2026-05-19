@@ -1,20 +1,31 @@
 ---
 name: raindrop-bookmarks
-description: "Fetch or search Jonny's saved Raindrop bookmarks via n8n. Use this skill whenever the user asks about their bookmarks, saved links, reading list, or anything from their Raindrop collection. Triggers include: 'what did I save', 'show my bookmarks', 'search my bookmarks for X', 'find bookmarks about X', 'what's in my reading list', 'recent Raindrop saves', 'what bookmarks do I have about X', or any mention of Raindrop. Always use this skill — do not attempt to call the Raindrop API directly."
+description: >
+  Use when the user asks about Raindrop bookmarks, saved links, reading list, or wants to search, list, add, or tag bookmarks. Triggers: "what did I save", "show my bookmarks", "search my bookmarks for X", "find bookmarks about X", "recent Raindrop saves", or any mention of Raindrop. Do not call the Raindrop API directly — always use the n8n workflows below.
 ---
+
+# Raindrop Bookmarks
 
 Fetch or search bookmarks from Jonny's Raindrop account using dedicated n8n workflows.
 
-## Which workflow to use
+## When to use
 
-- **Browsing / recent saves** — use the `Get Recent Bookmarks` workflow (`Idiz0rhexWhQXUCp`)
-- **Searching by keyword, topic, or tag** — use the `Search Bookmarks` workflow (`ij5fkIZ8G7l3WMWY`)
-- **Adding a bookmark** — use the `Add Raindrop Bookmark` workflow (`vteOoFovUkAEn8pF`)
-- **Managing tags** — use the `Manage Raindrop Tags` workflow (`namNdNaEBz5IwElE`)
+- Browsing recent saves or listing bookmarks from a collection.
+- Searching bookmarks by keyword, topic, or tag.
+- Adding a new bookmark or updating tags (with user confirmation).
 
----
+**Use this instead when:** the user only wants to read/summarise a single URL they paste — use `defuddle-n8n` or WebFetch, not Raindrop. For general web research not tied to saved bookmarks, use `deep-research` or web search.
 
-## Collections
+## Inputs
+
+Ask only for what is missing:
+
+1. **Intent** — recent list, search, add bookmark, or manage tags.
+2. **Query / URL** — search term or link for add.
+3. **collectionId** — required when adding; optional for search/recent (`"0"` = all collections).
+4. **bookmarkId** — required for tag mutations (`_id` from bookmark data).
+
+### Collections
 
 Always specify a `collectionId` when adding bookmarks — Jonny adds each bookmark to exactly one collection, whichever feels most fitting. Use `"0"` to search across all collections, never when adding.
 
@@ -42,13 +53,37 @@ Always specify a `collectionId` when adding bookmarks — Jonny adds each bookma
 | `69770335` | Aflo | 0 |
 | `69770343` | Big Motive | 0 |
 
----
+## Dependencies
 
-## Get Recent Bookmarks
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| None | — | |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| None | — | |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| n8n MCP (`execute_workflow`, `get_execution`) | Yes | List, search, add, and tag bookmarks via Raindrop workflows |
+
+## Workflow
+
+### Which workflow to use
+
+- **Browsing / recent saves** — `Get Recent Bookmarks` (`Idiz0rhexWhQXUCp`)
+- **Searching by keyword, topic, or tag** — `Search Bookmarks` (`ij5fkIZ8G7l3WMWY`)
+- **Adding a bookmark** — `Add Raindrop Bookmark` (`vteOoFovUkAEn8pF`) — **confirm with user first**
+- **Managing tags** — `Manage Raindrop Tags` (`namNdNaEBz5IwElE`) — **confirm with user first**
+
+### Get Recent Bookmarks
 
 **Workflow ID:** `Idiz0rhexWhQXUCp` | **Data node:** `Get Recent Bookmarks`
 
-### Execute
+**Execute:**
 
 ```javascript
 mcp__n8n-mcp__execute_workflow({
@@ -68,7 +103,7 @@ mcp__n8n-mcp__execute_workflow({
 })
 ```
 
-### Get results
+**Get results:**
 
 ```javascript
 mcp__n8n-mcp__get_execution({
@@ -80,13 +115,11 @@ mcp__n8n-mcp__get_execution({
 })
 ```
 
----
-
-## Search Bookmarks
+### Search Bookmarks
 
 **Workflow ID:** `ij5fkIZ8G7l3WMWY` | **Data node:** `Search Bookmarks`
 
-### Execute
+**Execute:**
 
 ```javascript
 mcp__n8n-mcp__execute_workflow({
@@ -107,7 +140,7 @@ mcp__n8n-mcp__execute_workflow({
 })
 ```
 
-### Get results
+**Get results:**
 
 ```javascript
 mcp__n8n-mcp__get_execution({
@@ -121,9 +154,7 @@ mcp__n8n-mcp__get_execution({
 
 The search response wraps results in an `items` array at the top level, alongside a `count` field. Each item has the same shape as the recent bookmarks response.
 
----
-
-## Add Bookmark
+### Add Bookmark
 
 **Workflow ID:** `vteOoFovUkAEn8pF`
 
@@ -149,9 +180,7 @@ mcp__n8n-mcp__execute_workflow({
 
 Always specify `collectionId` — omitting it lands the bookmark in unsorted (`-1`). Pick the single most fitting collection from the table above. If the content spans multiple areas, choose the primary use case.
 
----
-
-## Manage Tags
+### Manage Tags
 
 **Workflow ID:** `namNdNaEBz5IwElE`
 
@@ -180,11 +209,17 @@ mcp__n8n-mcp__execute_workflow({
 
 Get results with `get_execution`, node name `Update Tags`.
 
----
+### Troubleshooting
 
-## Bookmark fields
+- If execution returns no data, wait 2–3 seconds and retry `get_execution` — the workflow may still be running.
+- If `collectionId` is `-1`, only unsorted bookmarks are returned. Use `"0"` for all collections.
+- Search uses Raindrop's full-text search — it searches titles, descriptions, and tags.
 
-Both workflows return bookmarks with these fields:
+## Output
+
+### Bookmark fields
+
+Both list/search workflows return bookmarks with:
 
 - `title` — page title
 - `link` — URL
@@ -194,12 +229,27 @@ Both workflows return bookmarks with these fields:
 - `collectionId` — which Raindrop collection it belongs to
 - `domain` — the site domain
 
-## Presenting to the user
+### Presenting to the user
 
-List bookmarks clearly with title, URL, and relevant metadata. Keep output scannable — titles as links where markdown is supported, dates if the user asked about recency. For search results, note the total `count` if it's useful context.
+List bookmarks clearly with title, URL, and relevant metadata. Keep output scannable — titles as links where markdown is supported, dates if the user asked about recency. For search results, note the total `count` when useful.
 
-## Troubleshooting
+For add/tag actions, confirm success from `get_execution` and summarise what changed (URL, collection, tags).
 
-- If execution returns no data, wait 2–3 seconds and retry `get_execution` — the workflow may still be running.
-- If `collectionId` is `-1`, only unsorted bookmarks are returned. Use `"0"` for all collections.
-- Search uses Raindrop's full-text search — it searches titles, descriptions, and tags.
+## Guardrails
+
+- **Assumptions:** Do not invent bookmarks, tags, or collection counts not returned by the workflows.
+- **Confirmations:** Get explicit user approval before **Add Bookmark** or **Manage Tags** (add/remove/set). Summarise URL, collection, and tags in the confirmation prompt.
+- **Tool fallbacks:** Always use the n8n workflows above. **Never** call the Raindrop API directly or use unofficial clients. If n8n is unavailable, stop and tell the user — do not attempt a direct API workaround.
+- Read-only list/search does not require confirmation unless the user asked you to verify before showing results.
+
+## Follow-on skills
+
+- **`defuddle-n8n`** — read or summarise a bookmark URL the user wants to explore in depth.
+- **`deep-research`** — synthesise themes across multiple bookmarks the user selected.
+- Orchestrators may chain search → user picks links → defuddle for reading.
+
+## Lightweight evals
+
+1. **Should trigger:** "What did I save about React Server Components in Raindrop?"
+2. **Should trigger:** "Show my 10 most recent Design collection bookmarks."
+3. **Near-miss:** "Save this to my reading list in Pocket" — not Raindrop; do not use this skill unless the user means Raindrop specifically.

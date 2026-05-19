@@ -1,74 +1,110 @@
 ---
 name: continual-learning
 description: >
-  Curate and summarise recent developments on a topic — design trends, UX research, tools, or industry news — as a digestible learning update. Use when the user wants to stay current on a subject or wants a summary of what's new. Triggers on: "learn about [X]", "keep up with [X]", "weekly digest on", "what's new in [X]", "catch me up on [X]", "summarise recent [X] developments", "what's happening in [X]", or any request for a curated knowledge update on a topic.
+  Use when the agent should persist durable learnings — user corrections, recurring preferences, or stable workspace facts — into AGENTS.md. Triggers: "remember this", "that's wrong, always…", "update AGENTS.md", "mine prior chats", "continual learning", "capture what we learned". Do not use for industry topic digests — use `topic-digest` or `deep-research`.
 ---
 
 # Continual Learning
 
-Curate signal-rich updates on a topic. Not a link dump — a synthesised digest that makes it easy to stay sharp without spending hours reading.
+Keep workspace memory current so future sessions inherit **confirmed** preferences and facts — not one-off chat noise. The agent updates **`AGENTS.md`** when the user teaches or corrects something durable, and optionally mines recent chat transcripts incrementally.
 
-## Before you start
+## When to use
 
-Ask:
-1. What topic? (the more specific, the better — "UX for B2B SaaS" not just "UX")
-2. Time frame: last week / month / quarter?
-3. Format: quick bullets / detailed brief / Tana note?
-4. Recurring? (if yes, note the cadence — this becomes a regular briefing)
+- User corrects behaviour they expect to stick ("always use X", "never do Y", "I prefer Z").
+- User asks to remember a preference or workspace fact for later sessions.
+- End of session / explicit request to mine transcripts and refresh `AGENTS.md`.
+- Hook or automation runs the continual-learning loop after chats.
 
-## Content filters (signal over noise)
+**Use this instead when:**
 
-**Prioritise:**
-- Original research and studies with methodology
-- Practitioner writing — people who do the work, not just write about it
-- Case studies with real data and outcomes
-- Announcements from leading practitioners, tools, or organisations in the field
+| User intent | Use | Instead of |
+|-------------|-----|------------|
+| Persist preference or correction | `continual-learning` | Writing ad-hoc notes in random files |
+| "What's new in [industry/topic]?" digest | `topic-digest` or `deep-research` | `continual-learning` |
+| Change how a skill is authored | `skill-creator` | `continual-learning` |
+| Project decision log | `threads/.../decisions.md` or `plan-workflow` | `AGENTS.md` |
 
-**Avoid:**
-- Listicles ("10 tips for...")
-- AI-generated content without a named author
-- Press releases dressed as insight
-- Opinion without evidence
+## Inputs
+
+Ask only when unclear:
+
+1. **Source** — current correction, explicit "remember", and/or transcript mining?
+2. **Scope** — preference vs workspace fact (see [references/memory-format.md](references/memory-format.md))
+3. **Workspace root** — from **Workspace root** section in `skills-config.md` if present
+4. **Memory file** — from **Memory** section in `skills-config.md` (default `AGENTS.md`)
+
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| None | — | Standalone memory skill |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| `AGENTS.md` | Yes (create if missing) | Learned preferences; path may be set in `skills-config.md` → `memory.path` |
+| `skills-config.md` | Optional | **Memory** section ([skills-config.md](../../skills-config.md)) |
+| `.cursor/hooks/state/continual-learning-index.json` | Optional | Incremental transcript processing (Cursor) |
+| `~/.cursor/projects/<slug>/agent-transcripts/*.jsonl` | Optional | Transcript mining source |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| File read/write | Yes | Update `AGENTS.md` and index |
+| Subagent `agents-memory-updater` / `memory-updater` | Optional | Cursor: delegate full mining flow ([agents/memory-updater.md](agents/memory-updater.md)) |
 
 ## Workflow
 
-1. Search for recent content on the topic:
-   - `raindrop-bookmarks` for pre-saved relevant content
-   - Web search filtered to the specified time range
-   - `defuddle-n8n` to extract clean content from key URLs
-2. Assess source quality (see filters above)
-3. Group findings by theme (not by source)
-4. Identify what's emerging vs. established vs. declining in the space
+### A. In-session learning (immediate)
 
-## Output format
+When the user **corrects** you or says **remember** something:
 
-```
-## Learning Digest: [Topic]
-Period: [date range] | [n] sources reviewed | Cadence: [one-off / weekly / monthly]
+1. Decide if it is **durable** (will apply across sessions) vs **one-off** (this task only).
+2. If one-off — acknowledge; do **not** write to `AGENTS.md`.
+3. If durable — paraphrase as a single bullet and **confirm** with the user: *"Should I save this to AGENTS.md for future sessions?"*
+4. On yes — read `AGENTS.md`, merge bullet into the correct section per [references/memory-format.md](references/memory-format.md), dedupe, enforce 12-bullet cap.
+5. Tell the user what was stored (one line).
 
-### What's new
-1. **[Development]** — [2–3 sentence summary with why it matters] ([source](url))
-2. ...
+**Proactive capture:** After a user correction that sounds recurring, offer to save it — do not silently write without confirmation.
 
-### Patterns emerging
-- [Pattern] — [evidence and implication]
-- ...
+### B. Transcript mining (batch)
 
-### Worth reading in full
-| Article | Why |
-|---------|-----|
-| [Title](URL) | [what makes it worth the time] |
+For "mine chats", "continual learning run", or hook-triggered updates:
 
-### Fading / worth questioning
-- [Trend or practice that seems to be declining or being challenged]
+1. In **Cursor**, prefer delegating to subagent **`agents-memory-updater`** (or follow [agents/memory-updater.md](agents/memory-updater.md) inline).
+2. Load [continual-learning-index](references/memory-format.md) — process only transcripts **not in index** or with **newer mtime** than indexed.
+3. Extract only high-signal recurring corrections and stable workspace facts; exclude secrets and transient task detail.
+4. Update the memory file from **Memory** in `skills-config.md` (default `AGENTS.md`); refresh index; remove entries for deleted transcript files.
+5. If no meaningful updates: respond exactly **`No high-signal memory updates.`**
 
-### What this means for your work
-- [Direct implication 1]
-- [Direct implication 2]
-```
+Prefer **parent** conversation transcripts over subagent logs.
 
-## Setting up a recurring digest
+### C. What not to store
 
-If the user wants this regularly:
-1. Note the topic, frequency, and format in `threads/_INDEX.md` or Tana
-2. At the start of each session, check when the last digest was run and pick up from there
+- Task-specific instructions, file paths for this session only, API keys, client confidential content.
+- Whole conversation summaries — bullets only.
+- Duplicates of content already in `CLAUDE.md` / project rules unless the user wants a learned override in `AGENTS.md`.
+
+## Output
+
+- Updated `AGENTS.md` (and index when mining), **or**
+- Exact phrase: `No high-signal memory updates.`
+- Optional one-line summary of bullets added/changed for the user.
+
+## Guardrails
+
+- **Confirmations:** Always confirm before first-time write of a preference unless the user said "remember this" / "save to AGENTS.md" unambiguously.
+- **Assumptions:** Do not invent preferences the user did not state or imply repeatedly.
+- **Tool fallbacks:** No transcripts available → rely on in-session corrections only. No write access → show proposed bullets and ask the user to paste into `AGENTS.md`.
+
+## Follow-on skills
+
+- **`skill-creator`** — when a learned item should become formal skill guidance or a `references/` update instead of only `AGENTS.md`
+- **`plan-workflow`** — project execution memory belongs in plan/thread files, not `AGENTS.md`
+
+## Lightweight evals
+
+1. "Remember that I always want commit messages in sentence case — save that for next time."
+2. "Mine our last few Cursor chats and update AGENTS.md."
+3. "Give me a monthly digest of what's new in UX research." (near-miss — `topic-digest`, not this skill)

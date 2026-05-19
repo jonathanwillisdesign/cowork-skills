@@ -49,6 +49,7 @@ Every child skill should:
 - Use `client-resources` once at the start of workflows that need client-specific context.
 - Pass `client_context` downstream to context-injected child skills.
 - Child skills should not independently reload client context unless the user explicitly asks.
+- Resolve sources from root `skills-config.md` (local files, Notion, Tana, Google Docs).
 
 ## Quality Bar
 

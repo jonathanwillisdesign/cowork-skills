@@ -16,6 +16,29 @@ Ask:
 3. Pixel-perfect recreation, or "close enough with real components"?
 4. Which Figma page/file should this land on?
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `client-resources` | Optional | Design tokens and brand palette when mapping to a client system |
+| `figma-design` | Optional | Component registry keys and design-system conventions for library imports |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| Source image (URL, path, or paste) | Yes | Reference to analyse and recreate |
+| `Cowork/design-systems/[project]/components.yaml` (or registry) | Optional | `importComponentByKeyAsync` keys and variant labels |
+| `threads/[client]/resources/design-system/` | Optional | Via `client-resources` when project uses Cowork threads layout |
+| Figma file URL or file key | Yes | Destination file and page for the rebuilt frame |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| Figma MCP / `figma-console` | Yes | `figma_execute`, component import, frame build, `figma_capture_screenshot` |
+| Figma MCP (official) | Optional | `use_figma`, `get_design_context` when console MCP unavailable |
+| Image read / vision | Yes | Analyse layout, typography, and colour from the reference |
+
 ## Workflow
 
 ### Step 1: Analyse the reference

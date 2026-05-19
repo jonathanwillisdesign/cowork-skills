@@ -23,6 +23,26 @@ Ask:
 3. Is there a user flow to follow, or designing from scratch?
 4. What's the primary action on this screen?
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `prototype-no-fi` | Optional | Upstream concept exploration before wireframing |
+| `figma-design` | Optional | Create and annotate wireframes in Figma |
+| `client-resources` | Optional | Load `client_context` for client-specific constraints |
+| `prototype-hi-fi` | Optional | Follow-on after wireframe approval |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| None | — | Optional `client_context` or user flow from orchestrator |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| Figma MCP | Optional | Wireframe frames and annotations in Figma |
+
 ## Content hierarchy — define before placing
 
 1. What is the **primary action**? (most prominent)

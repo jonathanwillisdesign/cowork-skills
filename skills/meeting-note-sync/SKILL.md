@@ -15,6 +15,29 @@ Ask:
 2. Which project does this relate to? (check `threads/_INDEX.md` for path)
 3. Routing preference: tasks to Things / knowledge to Tana / context to thread files?
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `client-resources` | Optional | Resolve client/project when the meeting maps to a Cowork thread |
+| `defuddle-n8n` | Optional | Extract notes from a shared meeting URL before parsing |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| `threads/_INDEX.md` | Yes | Locate the project folder for decisions and phase updates |
+| `threads/[client]/projects/[project]/decisions.md` | Optional | Append agreed decisions (confirm before write) |
+| `threads/[client]/projects/[project]/current-phase.md` | Optional | Update live status and open actions (confirm before write) |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| None | — | Parsing pasted or user-supplied notes |
+| Things | Optional | Create action items when user approves sync |
+| Tana | Optional | Route knowledge, open questions, or tasks when user approves sync |
+| n8n MCP | Optional | Via `defuddle-n8n` when notes live at a URL |
+
 ## What to extract
 
 | Type | What it is | Where it goes |

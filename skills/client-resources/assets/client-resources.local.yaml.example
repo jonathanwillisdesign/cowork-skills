@@ -1,0 +1,17 @@
+# Copy to assets/client-resources.local.yaml and edit for your workspace.
+# This file is optional; the skill can auto-detect cowork-threads when ~/Cowork/threads exists.
+
+provider: cowork-threads
+# provider: explicit-path
+
+# cowork-threads
+workspace_root: /Users/you/Cowork
+
+# explicit-path (when provider is explicit-path)
+# resources_path: /path/to/client/assets
+# display_name: Acme Corp
+
+# Optional: limit load to sections (brand, design-system, logos, other)
+# scope:
+#   - brand
+#   - design-system

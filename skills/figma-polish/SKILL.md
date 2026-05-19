@@ -16,6 +16,29 @@ Ask:
 3. Is there a design system to validate against? (load `client-resources` if yes)
 4. Any specific areas of concern?
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `client-resources` | Optional | Load design system tokens and brand rules for validation |
+| `accessibility-review` | Optional | WCAG contrast and touch-target checks when not yet run |
+| `figma-design` | Optional | Component registry and project design-system docs for token/component checks |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| `Cowork/design-systems/[project]/` | Optional | Registry, tokens, patterns when polishing a registered project |
+| `threads/[client]/resources/design-system/` | Optional | Via `client-resources` / `cowork-threads` provider |
+| `client_context` (from orchestrator) | Optional | Pre-loaded tokens and guidelines |
+| Figma file URL or file key | Yes | Target file and frames to polish |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| Figma MCP / `figma-console` | Yes | Open file, edit frames, inspect components, capture before/after screenshots |
+| Figma MCP (official) | Optional | Alternative when `figma-console` unavailable (`get_design_context`, `use_figma`) |
+
 ## Polish checklist
 
 ### Spacing & layout

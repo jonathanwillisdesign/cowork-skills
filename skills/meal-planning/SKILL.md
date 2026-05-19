@@ -18,6 +18,23 @@ Ask:
 5. Budget range? (influences protein sources and ingredient choices)
 6. Any meals already planned or ingredients to use up?
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `endurance-coach` | Optional | Align carbs, protein, and meal timing to the weekly training schedule |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| None | — | Meal plans are generated from preferences, schedule, and user input |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| None | — | No integrations required |
+
 ## Meal plan principles
 
 - **Batch prep** reduces weeknight cooking load — plan 1–2 prep sessions

@@ -16,6 +16,27 @@ Ask:
 3. How many distinct user types are there?
 4. What format — markdown / Figma card / HTML?
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `client-resources` | Optional | Product and client context when personas are for a named project |
+| `deep-research` | Optional | Synthesise interview, survey, or market evidence when research exists |
+| `user-journey-map` | Optional | Follow-on to map journeys for defined personas |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| Research notes / data | Optional | Interviews, analytics, or support themes supplied by user |
+| None | — | Can proceed with stated assumptions when no research is available |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| None | — | Personas are authored from user input and optional research |
+| Web search | Optional | Light validation of role or industry context only when asked |
+
 ## Persona template
 
 ```

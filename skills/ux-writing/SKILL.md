@@ -17,6 +17,25 @@ Ask:
 4. What platform? (mobile = shorter; desktop = more space)
 5. Is there existing copy to improve, or starting from scratch?
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `client-resources` | Optional | Brand voice, tone, and terminology from `client_context` |
+| `prototype-hi-fi` | Optional | Screen context when copy is for an existing mockup |
+| `persona-creator` | Optional | User mindset and language when personas exist |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| None | — | Optional `client_context` or existing copy from orchestrator |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| None | — | Copy drafting does not require external tools |
+
 ## Copy types and principles
 
 | Type | Principle | Bad example | Good example |

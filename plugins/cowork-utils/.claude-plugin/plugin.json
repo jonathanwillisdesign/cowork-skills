@@ -1,7 +1,7 @@
 {
   "name": "cowork-utils",
   "version": "1.0.0",
-  "description": "Utility skills for Cowork — client-resources, defuddle-n8n, raindrop-bookmarks, plan-workflow, skill-creator, deep-research, continual-learning, deploy-artifact, image-generator, plan-write, plan-implement, and send-message.",
+  "description": "Utility skills for Cowork — client-resources, defuddle-n8n, raindrop-bookmarks, plan-workflow, skill-creator, continual-learning (AGENTS.md memory), deep-research, deploy-artifact, image-generator, plan-write, plan-implement, and send-message.",
   "author": {
     "name": "Jonny Willis",
     "email": "jonathanw@bigmotive.com",

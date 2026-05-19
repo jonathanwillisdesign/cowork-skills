@@ -15,6 +15,26 @@ Ask:
 2. What platform? (mobile / web — touch target sizes differ)
 3. Any known concerns to focus on?
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `prototype-hi-fi` | Optional | Typical input — polished screen to audit |
+| `figma-design` | Optional | Inspect Figma frames when a file link is provided |
+| `client-resources` | Optional | Brand colour tokens when validating contrast against a design system |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| Design artifact | Yes | Figma link, screenshot, or screen description from user/orchestrator |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| Figma MCP | Optional | Read frames and extract colours when auditing in Figma |
+| Screenshot / image | Optional | Visual audit when only a static capture is available |
+
 ## Audit checklist
 
 ### 1. Colour contrast

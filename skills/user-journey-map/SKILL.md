@@ -17,6 +17,27 @@ Ask:
 4. What's this map for? (team alignment / research synthesis / client presentation / design input)
 5. Output format? (markdown table / Figma frame)
 
+## Dependencies
+
+### Skills
+| Skill | Required | Purpose |
+|-------|----------|---------|
+| `persona-creator` | Optional | Define or refine the user before mapping the journey |
+| `figma-design` | Optional | Journey map canvas in Figma |
+| `client-resources` | Optional | Product and touchpoint context from `client_context` |
+| `design-inspiration` | Optional | Reference patterns for high-opportunity stages |
+
+### Files / structure
+| Path or pattern | Required | Purpose |
+|-----------------|----------|---------|
+| Persona artifact | Optional | From `persona-creator` or user |
+| None | — | Markdown maps need no files beyond user input |
+
+### Tools / MCPs
+| Tool | Required | Purpose |
+|------|----------|---------|
+| Figma MCP | Optional | Figma journey map output via `figma-design` |
+
 ## Journey map columns
 
 | Column | What to fill in |

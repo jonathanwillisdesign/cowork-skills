@@ -23,7 +23,7 @@ Every skill should have:
 - A `SKILL.md` with YAML frontmatter containing `name` and `description`.
 - A lowercase hyphenated name that matches the directory.
 - A trigger-focused description starting with or clearly implying "Use when...".
-- Clear sections for input, workflow/instructions, output, guardrails, and follow-on skills.
+- Clear sections for input, dependencies (skills, files, tools/MCPs), workflow/instructions, output, guardrails, and follow-on skills.
 - Supporting `references/`, `scripts/`, or `assets/` only when they reduce `SKILL.md` size or provide reusable tooling.
 
 ## Description Quality

@@ -14,9 +14,9 @@ Examples: `qa-review`, `document-format`, `version-save`, `research-gather`, `no
 
 ### client-resources — the bridge
 
-A single shared skill that reads `threads/[client]/resources/` and returns structured `client_context`. Called once at the start of any orchestrator that needs client-specific behaviour.
+A single shared skill that loads client reference material via a **pluggable provider** (e.g. Cowork `threads/[client]/resources/`, an explicit folder path, or pasted context) and returns structured `client_context`. Called once at the start of any orchestrator that needs client-specific behaviour.
 
-One skill, works for every client — the content it loads is what varies. Adding a new client means adding their resources folder, not writing a new skill.
+One skill, works for every client and workspace layout — the provider and folder content vary. Adding a new client means adding their resources (or path), not writing a new skill. See `skills/client-resources/references/providers/`.
 
 ### Shared child skills — context-injected
 
@@ -28,7 +28,7 @@ Examples: `brand-voice`, `figma-audit`, `brief-extract`
 
 Skills that chain child skills into a complete end-to-end workflow. They don't do the work — they sequence it. Every orchestrator:
 
-1. Detects the active client (from user input or `threads/_INDEX.md`)
+1. Detects the active client (from user input, provider config, or workspace index such as `threads/_INDEX.md`)
 2. Calls `client-resources` first if any child skill needs client context
 3. Passes `client_context` downstream to context-injected child skills as a parameter
 4. Chains all child skills in sequence, passing outputs forward
@@ -60,7 +60,7 @@ Orchestrator
 
 **Why this matters:**
 - Improving `brand-voice` once improves every orchestrator that uses it
-- Adding a new client = adding their `threads/[client]/resources/` folder — no code changes
+- Adding a new client = adding their resources folder (or path) — no skill code changes
 - Child skills stay lean and focused because they never deal with context loading
 
 ---

@@ -8,10 +8,7 @@
   "plugins": [
     {
       "name": "cowork-skills",
-      "source": {
-        "type": "github",
-        "repo": "jonathanwillisdesign/cowork-skills"
-      },
+      "source": ".",
       "description": "6 skills for UX designers: figma-design, skill-creator, plan-workflow, defuddle-n8n, raindrop-bookmarks, client-resources.",
       "version": "1.0.0"
     }

@@ -1,0 +1,13 @@
+{
+  "name": "cowork-skills",
+  "version": "1.0.0",
+  "description": "A curated skill library for UX designers and creative professionals using Cowork — covering Figma automation, web research, bookmarks, planning workflows, and skill self-improvement tooling.",
+  "author": {
+    "name": "Jonny Willis",
+    "email": "jonathanw@bigmotive.com",
+    "url": "https://github.com/jonnywillis"
+  },
+  "repository": "https://github.com/jonnywillis/cowork-skills",
+  "license": "MIT",
+  "tags": ["design", "figma", "ux", "research", "productivity", "workflow"]
+}

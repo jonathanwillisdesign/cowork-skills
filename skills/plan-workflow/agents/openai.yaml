@@ -1,0 +1,7 @@
+interface:
+  display_name: "Plan Workflow"
+  short_description: "Create and update cross-chat plans"
+  default_prompt: "Use $plan-workflow to create a persistent plan and keep it updated across chats."
+
+policy:
+  allow_implicit_invocation: true

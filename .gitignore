@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+.venv
+venv/
+
+# Build output
+*.plugin
+dist/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Eval output (generated, not source)
+skills/skill-creator/eval-output/
+skills/skill-creator/benchmarks/results/

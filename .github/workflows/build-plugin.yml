@@ -1,0 +1,83 @@
+name: Build Plugin
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get version from plugin.json
+        id: version
+        run: echo "version=$(jq -r .version .claude-plugin/plugin.json)" >> $GITHUB_OUTPUT
+
+      - name: Build .plugin file
+        run: |
+          zip -r cowork-skills-${{ steps.version.outputs.version }}.plugin . \
+            -x "*.git*" \
+            -x "*.DS_Store" \
+            -x ".github/*" \
+            -x "dist/*" \
+            -x "*.plugin" \
+            -x "skills/skill-creator/eval-output/*" \
+            -x "**/__pycache__/*" \
+            -x "**/*.pyc"
+
+      - name: Upload artifact (on every push)
+        uses: actions/upload-artifact@v4
+        with:
+          name: cowork-skills-plugin
+          path: cowork-skills-*.plugin
+          retention-days: 30
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get version from plugin.json
+        id: version
+        run: echo "version=$(jq -r .version .claude-plugin/plugin.json)" >> $GITHUB_OUTPUT
+
+      - name: Build .plugin file
+        run: |
+          zip -r cowork-skills-${{ steps.version.outputs.version }}.plugin . \
+            -x "*.git*" \
+            -x "*.DS_Store" \
+            -x ".github/*" \
+            -x "dist/*" \
+            -x "*.plugin" \
+            -x "skills/skill-creator/eval-output/*" \
+            -x "**/__pycache__/*" \
+            -x "**/*.pyc"
+
+      - name: Extract changelog for this version
+        id: changelog
+        run: |
+          # Pull the section for the current version from CHANGELOG.md
+          awk "/^## \[${{ steps.version.outputs.version }}\]/{found=1; next} /^## \[/{if(found) exit} found{print}" CHANGELOG.md > release_notes.md
+          cat release_notes.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "cowork-skills v${{ steps.version.outputs.version }}"
+          body_path: release_notes.md
+          files: cowork-skills-${{ steps.version.outputs.version }}.plugin
+          draft: false
+          prerelease: false

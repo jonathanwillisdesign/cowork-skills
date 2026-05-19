@@ -4,24 +4,18 @@
     "name": "Jonny Willis",
     "email": "jonathanw@bigmotive.com"
   },
-  "description": "Skill plugins for Cowork — covering UX design, research, planning, content creation, and personal wellness.",
+  "description": "Skill plugins for Cowork — professional design, research, planning, and content creation skills, plus personal wellness coaching.",
   "plugins": [
-    {
-      "name": "cowork-skills",
-      "source": "./plugins/cowork-skills",
-      "description": "6 core skills for UX designers: figma-design, skill-creator, plan-workflow, defuddle-n8n, raindrop-bookmarks, client-resources.",
-      "version": "1.0.0"
-    },
     {
       "name": "cowork-work",
       "source": "./plugins/cowork-work",
-      "description": "24 professional skills across design & UX, research, planning, and content creation — for working designers.",
+      "description": "30 professional skills for UX designers — Figma, prototyping, accessibility, user research, competitor analysis, planning, and content creation.",
       "version": "1.0.0"
     },
     {
       "name": "cowork-life",
       "source": "./plugins/cowork-life",
-      "description": "4 personal wellness skills — running coach, triathlon coach, meal planning, and morning planning.",
+      "description": "4 personal wellness skills — running coach, triathlon coach, meal planning, and morning routine planning.",
       "version": "1.0.0"
     }
   ]

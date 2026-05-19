@@ -19,7 +19,7 @@ A curated skill library for UX designers and creative professionals using [Cowor
 
 ```bash
 /plugin marketplace add jonathanwillisdesign/cowork-skills
-/plugin install cowork-skills@cowork-skills
+/plugin install cowork-skills@cowork-marketplace
 ```
 
 Skills are namespaced as `cowork-skills:skill-name` after installation.

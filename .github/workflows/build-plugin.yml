@@ -1,4 +1,4 @@
-name: Build Plugin
+name: Build Plugins
 
 on:
   push:
@@ -11,31 +11,36 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        plugin:
+          - cowork-work
+          - cowork-utils
+          - cowork-life
+          - cowork-skills
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get version from plugin.json
+      - name: Get version
         id: version
-        run: echo "version=$(jq -r .version .claude-plugin/plugin.json)" >> $GITHUB_OUTPUT
+        run: |
+          VERSION=$(jq -r .version "plugins/${{ matrix.plugin }}/.claude-plugin/plugin.json")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Build .plugin file
         run: |
-          zip -r cowork-skills-${{ steps.version.outputs.version }}.plugin . \
-            -x "*.git*" \
-            -x "*.DS_Store" \
-            -x ".github/*" \
-            -x "dist/*" \
-            -x "*.plugin" \
-            -x "skills/skill-creator/eval-output/*" \
-            -x "**/__pycache__/*" \
-            -x "**/*.pyc"
+          mkdir -p dist
+          cd "plugins/${{ matrix.plugin }}"
+          zip -ry "../../dist/${{ matrix.plugin }}-${{ steps.version.outputs.version }}.plugin" . \
+            -x "*.DS_Store"
 
-      - name: Upload artifact (on every push)
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: cowork-skills-plugin
-          path: cowork-skills-*.plugin
+          name: ${{ matrix.plugin }}-plugin
+          path: dist/${{ matrix.plugin }}-*.plugin
           retention-days: 30
 
   release:
@@ -47,37 +52,20 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Get version from plugin.json
-        id: version
-        run: echo "version=$(jq -r .version .claude-plugin/plugin.json)" >> $GITHUB_OUTPUT
-
-      - name: Build .plugin file
-        run: |
-          zip -r cowork-skills-${{ steps.version.outputs.version }}.plugin . \
-            -x "*.git*" \
-            -x "*.DS_Store" \
-            -x ".github/*" \
-            -x "dist/*" \
-            -x "*.plugin" \
-            -x "skills/skill-creator/eval-output/*" \
-            -x "**/__pycache__/*" \
-            -x "**/*.pyc"
-
-      - name: Extract changelog for this version
-        id: changelog
-        run: |
-          # Pull the section for the current version from CHANGELOG.md
-          awk "/^## \[${{ steps.version.outputs.version }}\]/{found=1; next} /^## \[/{if(found) exit} found{print}" CHANGELOG.md > release_notes.md
-          cat release_notes.md
+      - name: Download all plugin artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: '*-plugin'
+          merge-multiple: true
+          path: dist
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: "cowork-skills v${{ steps.version.outputs.version }}"
-          body_path: release_notes.md
-          files: cowork-skills-${{ steps.version.outputs.version }}.plugin
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: dist/*.plugin
           draft: false
           prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -75,7 +75,7 @@ Ask:
 
 ## Training alignment flag
 
-If the user has an active training plan (via `running-coach` or `triathlon-coach`), check the weekly schedule:
+If the user has an active training plan via `endurance-coach`, check the weekly schedule:
 - Long / hard training day → higher carb dinner the night before and breakfast that day
 - Rest day → lighter carbs, focus on vegetables and protein for recovery
 - Race day → agreed pre-race nutrition protocol (ask if they have one)

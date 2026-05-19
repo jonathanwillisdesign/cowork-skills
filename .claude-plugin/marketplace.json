@@ -4,24 +4,30 @@
     "name": "Jonny Willis",
     "email": "jonathanw@bigmotive.com"
   },
-  "description": "Skill plugins for Cowork — professional design, research, planning, and content creation skills, plus personal wellness coaching.",
+  "description": "Skill plugins for Cowork — professional design (cowork-work), utilities (cowork-utils), and personal wellness (cowork-life). Legacy cowork-skills bundle available for backward compatibility.",
   "plugins": [
     {
       "name": "cowork-work",
       "source": "./plugins/cowork-work",
-      "description": "30 professional skills for UX designers — Figma, prototyping, accessibility, user research, competitor analysis, planning, and content creation.",
-      "version": "1.0.0"
-    },
-    {
-      "name": "cowork-life",
-      "source": "./plugins/cowork-life",
-      "description": "4 personal wellness skills — running coach, triathlon coach, meal planning, and morning routine planning.",
+      "description": "Professional UX and Figma — currently includes figma-design. More design skills added as they pass package review (see PACKAGE-MATRIX.md).",
       "version": "1.0.0"
     },
     {
       "name": "cowork-utils",
       "source": "./plugins/cowork-utils",
-      "description": "7 utility skills — deploy artifacts, generate images, send messages, write plans, implement plans, deep research, and continual learning.",
+      "description": "Helpers and cross-cutting tools — client-resources, defuddle-n8n, raindrop-bookmarks, plan-workflow, skill-creator, deep-research, continual-learning, deploy-artifact, image-generator, plan-write, plan-implement, send-message.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "cowork-life",
+      "source": "./plugins/cowork-life",
+      "description": "Personal wellness — currently includes endurance-coach (running and triathlon). meal-planning and morning-planner coming after review.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "cowork-skills",
+      "source": "./plugins/cowork-skills",
+      "description": "Legacy bundle — original six skills only. Use cowork-work + cowork-utils + cowork-life for new installs.",
       "version": "1.0.0"
     }
   ]

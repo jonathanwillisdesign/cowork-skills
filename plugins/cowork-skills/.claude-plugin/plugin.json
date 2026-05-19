@@ -1,7 +1,7 @@
 {
   "name": "cowork-skills",
   "version": "1.0.0",
-  "description": "A curated skill library for UX designers and creative professionals using Cowork — covering Figma automation, web research, bookmarks, planning workflows, and skill self-improvement tooling.",
+  "description": "Legacy transitional bundle — original six skills (figma-design, client-resources, defuddle-n8n, raindrop-bookmarks, plan-workflow, skill-creator). New installs should use cowork-work, cowork-utils, and cowork-life instead.",
   "author": {
     "name": "Jonny Willis",
     "email": "jonathanw@bigmotive.com",
@@ -9,5 +9,5 @@
   },
   "repository": "https://github.com/jonathanwillisdesign/cowork-skills",
   "license": "MIT",
-  "tags": ["design", "figma", "ux", "research", "productivity", "workflow"]
+  "tags": ["design", "figma", "ux", "research", "productivity", "workflow", "legacy"]
 }

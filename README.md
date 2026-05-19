@@ -1,74 +1,98 @@
 # cowork-skills
 
-A curated skill library for UX designers and creative professionals using [Cowork](https://claude.ai) — built and maintained by [Big Motive](https://bigmotive.com).
+A curated skill library for UX designers and creative professionals using [Cowork](https://claude.ai) and Claude Code — built and maintained by [Big Motive](https://bigmotive.com).
 
-## Skills
+Skills live at `skills/` (single source of truth). Installable plugins symlink only **refined** skills — see [PACKAGE-MATRIX.md](PACKAGE-MATRIX.md) for readiness status.
 
-| Skill | What it does | Trigger phrases |
-|---|---|---|
-| **figma-design** | Build screens and layouts in Figma using a project's design system | "create a screen in Figma", "set up the design system for [project]" |
-| **skill-creator** | Create, improve, and benchmark Claude skills | "create a skill", "improve this skill", "run evals" |
-| **plan-workflow** | Create cross-chat plans that persist across conversations | "let's plan this", "create a workflow for [task]" |
-| **defuddle-n8n** | Fetch clean readable content from any URL via n8n | Any URL you want to read or summarise |
-| **raindrop-bookmarks** | Search and manage Raindrop bookmarks | "show my bookmarks", "search bookmarks for X" |
-| **client-resources** | Load brand/design system context for a client | Called automatically at the start of client workflows |
+## Marketplace plugins
+
+| Plugin | Audience | Skills included (current) |
+|--------|----------|---------------------------|
+| **cowork-work** | Professional UX / design | `figma-design` |
+| **cowork-utils** | Cross-cutting helpers | `client-resources`, `defuddle-n8n`, `raindrop-bookmarks`, `plan-workflow`, `skill-creator`, `continual-learning`, `deep-research`, `deploy-artifact`, `image-generator`, `plan-implement`, `plan-write`, `send-message` |
+| **cowork-life** | Personal wellness | `endurance-coach` |
+| **cowork-skills** *(legacy)* | Backward compatibility | Original six: `figma-design`, `client-resources`, `defuddle-n8n`, `raindrop-bookmarks`, `plan-workflow`, `skill-creator` |
+
+More work and life skills are in the repo under `refine-first` status and will be added to packages as they are reviewed.
 
 ## Installing
 
-### From Marketplace (recommended)
+### From marketplace (recommended)
 
 ```bash
 /plugin marketplace add jonathanwillisdesign/cowork-skills
+/plugin install cowork-work@cowork-marketplace
+/plugin install cowork-utils@cowork-marketplace
+/plugin install cowork-life@cowork-marketplace
+```
+
+Skills are namespaced by plugin, e.g. `cowork-work:figma-design`, `cowork-utils:defuddle-n8n`.
+
+### Legacy single plugin
+
+If you already use the original bundle:
+
+```bash
 /plugin install cowork-skills@cowork-marketplace
 ```
 
-Skills are namespaced as `cowork-skills:skill-name` after installation.
+New projects should prefer the split packages above.
 
-### From .plugin file
+### From `.plugin` artifacts
 
-Download the latest `cowork-skills.plugin` from the repo root or [Releases](https://github.com/jonathanwillisdesign/cowork-skills/releases) and drag it into Claude Code.
+GitHub Actions builds one `.plugin` file per package on push to `main`. Download artifacts from [Actions](https://github.com/jonathanwillisdesign/cowork-skills/actions) or [Releases](https://github.com/jonathanwillisdesign/cowork-skills/releases) when tagged.
 
-### From source
+### From source (development)
 
 ```bash
 git clone https://github.com/jonathanwillisdesign/cowork-skills
 cd cowork-skills
-zip -r cowork-skills.plugin . -x "*.git*" -x "*.DS_Store"
+claude --plugin-dir .
 ```
 
-Then drag `cowork-skills.plugin` into Claude Code.
+Inside Claude Code, run `/plugin` to confirm skills load.
 
 ## Configuration
 
-Some skills require external services to be set up:
-
 | Skill | Requires |
-|---|---|
-| `defuddle-n8n` | An n8n instance with the Defuddle workflow active |
-| `raindrop-bookmarks` | An n8n workflow connected to the Raindrop API |
-| `client-resources` | A `Cowork/threads/[client]/resources/` folder structure |
-| `figma-design` | Figma MCP connected in Cowork |
+|-------|----------|
+| `defuddle-n8n` | n8n instance with Defuddle workflow |
+| `raindrop-bookmarks` | n8n workflows connected to Raindrop |
+| `client-resources` | `Cowork/threads/[client]/resources/` (or equivalent thread layout) |
+| `figma-design` | Figma MCP / Desktop Bridge in Cowork |
 
-Skills without external dependencies (`skill-creator`, `plan-workflow`) work out of the box.
+Skills such as `skill-creator` and `plan-workflow` work without external services.
+
+## Repository layout
+
+```
+cowork-skills/
+├── .claude-plugin/marketplace.json
+├── skills/                    ← all skill sources
+├── plugins/
+│   ├── cowork-work/
+│   ├── cowork-utils/
+│   ├── cowork-life/
+│   └── cowork-skills/         ← legacy transitional package
+├── PACKAGE-MATRIX.md          ← what ships where
+└── .cursor/rules/             ← skill-system + authoring conventions
+```
 
 ## Self-improvement
 
-This repo is designed to be self-improving. The `skill-creator` skill can write improvements back to skill files in this repo. Workflow:
+1. Edit `skills/[skill-name]/SKILL.md`
+2. Update [PACKAGE-MATRIX.md](PACKAGE-MATRIX.md) when a skill is ready to ship
+3. Add symlinks under the target `plugins/*/skills/` directory
+4. Commit, push, and reinstall or update the marketplace
 
-1. Use `skill-creator` to evaluate and improve a skill
-2. The updated `SKILL.md` is written to `skills/[skill-name]/SKILL.md`
-3. Commit and push: `git add . && git commit -m "improve: [skill-name]" && git push`
-4. GitHub Actions builds a new `.plugin` and attaches it to a release
-5. Reinstall in Cowork to pick up the changes
+Use `skill-creator` for evals and description tuning.
 
 ## Contributing
 
-1. Fork this repo
-2. Add a new folder under `skills/` with a `SKILL.md`
-3. Follow the [skill authoring guide](skills/skill-creator/references/schemas.md)
+1. Add or edit skills under `skills/`
+2. Follow `.cursor/rules/skill-authoring.mdc` and [skill-creator references](skills/skill-creator/references/)
+3. Do not add symlinks until the skill is marked `included` in PACKAGE-MATRIX.md
 4. Open a PR
-
-Skills must include a frontmatter block with `name` and `description` fields, and a clear trigger definition in the body.
 
 ## Changelog
 

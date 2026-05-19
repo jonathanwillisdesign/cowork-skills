@@ -72,5 +72,5 @@ A 5–10 minute orientation before starting work (using `daily-briefing`) preven
 
 Offer to:
 - Cross-check against `daily-briefing` for any project urgencies
-- Coordinate with `running-coach` or `triathlon-coach` training for the day
+- Coordinate with `endurance-coach` training for the day
 - Note the daily intention in Tana

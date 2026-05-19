@@ -1,7 +1,7 @@
 {
   "name": "cowork-work",
   "version": "1.0.0",
-  "description": "30 professional skills for UX designers — Figma design, prototyping (hi-fi/wireframe/no-fi), accessibility, user research, personas, UX writing, competitor analysis, brainstorming, deep research, project planning, workshops, content creation, and deployment.",
+  "description": "Professional UX and Figma skills for Cowork. Currently ships figma-design; additional design skills are added as they pass review (see PACKAGE-MATRIX.md in the marketplace repo).",
   "author": {
     "name": "Jonny Willis",
     "email": "jonathanw@bigmotive.com",
@@ -9,5 +9,5 @@
   },
   "repository": "https://github.com/jonathanwillisdesign/cowork-skills",
   "license": "MIT",
-  "tags": ["design", "ux", "figma", "research", "planning", "productivity", "content"]
+  "tags": ["design", "ux", "figma"]
 }

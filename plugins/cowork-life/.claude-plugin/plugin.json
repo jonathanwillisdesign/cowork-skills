@@ -1,7 +1,7 @@
 {
   "name": "cowork-life",
   "version": "1.0.0",
-  "description": "Personal wellness, coaching, and lifestyle skills. Covers endurance training for running and triathlon, weekly meal planning, and morning routine planning.",
+  "description": "Personal wellness skills for Cowork. Currently ships endurance-coach (running and triathlon training). meal-planning and morning-planner will be added after review.",
   "author": {
     "name": "Jonny Willis",
     "email": "jonathanw@bigmotive.com",
@@ -9,5 +9,5 @@
   },
   "repository": "https://github.com/jonathanwillisdesign/cowork-skills",
   "license": "MIT",
-  "tags": ["wellness", "fitness", "triathlon", "running", "nutrition", "lifestyle", "planning"]
+  "tags": ["wellness", "fitness", "triathlon", "running", "lifestyle"]
 }

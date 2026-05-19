@@ -1,7 +1,7 @@
 {
   "name": "cowork-utils",
   "version": "1.0.0",
-  "description": "Utility skills for Cowork — helpers for deploying artifacts, generating images, sending messages, writing plans, deep research, and continual learning. Called from within other workflows rather than as standalone activities.",
+  "description": "Utility skills for Cowork — client-resources, defuddle-n8n, raindrop-bookmarks, plan-workflow, skill-creator, deep-research, continual-learning, deploy-artifact, image-generator, plan-write, plan-implement, and send-message.",
   "author": {
     "name": "Jonny Willis",
     "email": "jonathanw@bigmotive.com",
@@ -9,5 +9,5 @@
   },
   "repository": "https://github.com/jonathanwillisdesign/cowork-skills",
   "license": "MIT",
-  "tags": ["utilities", "deploy", "research", "planning", "content", "helpers"]
+  "tags": ["utilities", "research", "planning", "deploy", "content", "helpers"]
 }

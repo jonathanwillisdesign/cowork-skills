@@ -1,0 +1,50 @@
+---
+description: Skill creation and refinement standards for this repo
+alwaysApply: true
+---
+
+# Skill Authoring
+
+Use this rule whenever creating, editing, reviewing, or packaging skills in this repo.
+
+## Before Creating Or Editing
+
+- First decide whether the work is a new skill, an improvement to an existing skill, or an orchestrator.
+- Check `skills/skill-creator/references/existing-skills.md` before creating anything new.
+- Prefer extending or composing existing skills over creating parallel skills with overlapping jobs.
+- Capture intent before drafting: trigger conditions, inputs, output format, success criteria, edge cases, and dependencies.
+- Do not package a skill into a plugin until it has been reviewed and has at least lightweight eval prompts.
+
+## Skill Shape
+
+Every skill should have:
+
+- A directory under `skills/[skill-name]/`.
+- A `SKILL.md` with YAML frontmatter containing `name` and `description`.
+- A lowercase hyphenated name that matches the directory.
+- A trigger-focused description starting with or clearly implying "Use when...".
+- Clear sections for input, workflow/instructions, output, guardrails, and follow-on skills.
+- Supporting `references/`, `scripts/`, or `assets/` only when they reduce `SKILL.md` size or provide reusable tooling.
+
+## Description Quality
+
+- Write descriptions for discovery, not as summaries of the whole workflow.
+- Include concrete user phrases, contexts, and near-miss terms.
+- Avoid over-broad triggers that hijack adjacent work.
+- Add "use this instead when..." guidance in the body for overlapping skills.
+
+## Instruction Quality
+
+- Use imperative instructions.
+- Explain why key steps matter so the agent can handle edge cases intelligently.
+- Keep child skills focused on one job.
+- Keep orchestrator skills focused on sequencing, handoffs, checkpoints, and validation.
+- State assumptions and missing inputs; do not invent facts, owners, dates, research evidence, or tool access.
+- Add confirmation gates before side effects: writes, deploys, sends, bookmark mutations, Figma edits, or project-memory updates.
+
+## Evaluation
+
+- Add 2-3 realistic eval prompts before marking a skill as refined.
+- Include both should-trigger and near-miss prompts when updating descriptions.
+- For skill systems, eval the handoffs as well as each child skill.
+- Use the eval viewer/workspace flow from `skill-creator` when doing substantial rewrites.

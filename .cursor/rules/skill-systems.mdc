@@ -1,0 +1,58 @@
+---
+description: Skill system architecture conventions for this repo
+alwaysApply: true
+---
+
+# Skill Systems
+
+This repo is a reusable skill library. Treat individual skills as modular components, not isolated endpoints and not mega-skills.
+
+## Core Model
+
+- Build small skills that do one job well.
+- Compose end-to-end workflows with orchestrator skills.
+- Keep child skills reusable across multiple orchestrators.
+- Pass only the context each step needs.
+- Make every handoff explicit: input, output, next skill, and validation checkpoint.
+
+## When Creating Or Refining Skills
+
+- Start by deciding whether the work is a child skill or an orchestrator.
+- Use a child skill for a focused capability: research, copy, audit, extraction, formatting, deployment.
+- Use an orchestrator when a real workflow chains multiple skills toward a business or project outcome.
+- Do not create a mega skill that handles research, creation, QA, publishing, and storage in one `SKILL.md`.
+- Do not leave the user to manually copy output from one skill into the next if the workflow is repeatable.
+
+## Orchestrator Requirements
+
+Every orchestrator should define:
+
+- Skill sequence: which skills run and in what order.
+- Step inputs: what each skill needs and where it comes from.
+- Step outputs: the exact shape passed to the next skill.
+- Human checkpoints: where the user approves, adjusts, or stops the workflow.
+- Display/storage plan: where final outputs go and how the user reviews them.
+- Validation: what must be checked before moving to the next step.
+
+## Child Skill Requirements
+
+Every child skill should:
+
+- Accept clean inputs from an orchestrator without needing the whole conversation.
+- Return a clearly labelled output that another skill can consume.
+- Avoid loading broad context unless it is essential.
+- State assumptions and missing inputs rather than inventing facts.
+- Include guardrails for tool availability, permissions, and side effects.
+
+## Context Injection
+
+- Use `client-resources` once at the start of workflows that need client-specific context.
+- Pass `client_context` downstream to context-injected child skills.
+- Child skills should not independently reload client context unless the user explicitly asks.
+
+## Quality Bar
+
+- Prefer progressive disclosure: move heavy references, examples, scripts, or schemas out of `SKILL.md`.
+- Keep descriptions trigger-focused: "Use when..." plus concrete situations, not a workflow summary.
+- Add "use this instead when..." notes for overlapping skills.
+- Create or update eval prompts before treating a skill as refined enough to package.

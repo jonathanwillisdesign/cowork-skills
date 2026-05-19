@@ -16,17 +16,18 @@ This repo follows the [official Claude Code marketplace pattern](https://code.cl
 cowork-skills/                          ← marketplace repo root
 ├─ .claude-plugin/
 │   └─ marketplace.json                 ← marketplace catalog (defines plugins)
+├─ skills/                              ← 6 skills (root level, agent-agnostic)
+│   ├─ client-resources/
+│   ├─ defuddle-n8n/
+│   ├─ figma-design/
+│   ├─ plan-workflow/
+│   ├─ raindrop-bookmarks/
+│   └─ skill-creator/
 ├─ plugins/
 │   └─ cowork-skills/                   ← the plugin
 │       ├─ .claude-plugin/
 │       │   └─ plugin.json              ← plugin manifest
-│       ├─ skills/                      ← 6 skills
-│       │   ├─ client-resources/
-│       │   ├─ defuddle-n8n/
-│       │   ├─ figma-design/
-│       │   ├─ plan-workflow/
-│       │   ├─ raindrop-bookmarks/
-│       │   └─ skill-creator/
+│       ├─ skills → ../../skills        ← symlink (Claude Code auto-discovery)
 │       ├─ README.md                    ← marketplace docs
 │       ├─ CHANGELOG.md
 │       └─ LICENSE
@@ -84,7 +85,7 @@ Download `cowork-skills-1.0.0.plugin` from [GitHub Actions artifacts](https://gi
 
 ### Edit a Skill
 
-Modify the SKILL.md file directly in `plugins/cowork-skills/skills/[skill-name]/SKILL.md`, then push to `main`. GitHub Actions automatically builds a new `.plugin` artifact.
+Modify the SKILL.md file directly in `skills/[skill-name]/SKILL.md`, then push to `main`. GitHub Actions automatically builds a new `.plugin` artifact.
 
 ### Add a New Skill
 

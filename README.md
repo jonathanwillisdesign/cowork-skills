@@ -15,25 +15,28 @@ A curated skill library for UX designers and creative professionals using [Cowor
 
 ## Installing
 
-### From GitHub (recommended)
+### From Marketplace (recommended)
 
-In Cowork, go to **Plugins → Add from URL** and paste:
-
+```bash
+/plugin marketplace add jonathanwillisdesign/cowork-skills
+/plugin install cowork-skills@cowork-skills
 ```
-https://github.com/jonnywillis/cowork-skills
-```
 
-Or download the latest `.plugin` file from [Releases](https://github.com/jonnywillis/cowork-skills/releases) and drag it into Cowork.
+Skills are namespaced as `cowork-skills:skill-name` after installation.
+
+### From .plugin file
+
+Download the latest `cowork-skills.plugin` from the repo root or [Releases](https://github.com/jonathanwillisdesign/cowork-skills/releases) and drag it into Claude Code.
 
 ### From source
 
 ```bash
-git clone https://github.com/jonnywillis/cowork-skills
+git clone https://github.com/jonathanwillisdesign/cowork-skills
 cd cowork-skills
 zip -r cowork-skills.plugin . -x "*.git*" -x "*.DS_Store"
 ```
 
-Then drag `cowork-skills.plugin` into Cowork.
+Then drag `cowork-skills.plugin` into Claude Code.
 
 ## Configuration
 

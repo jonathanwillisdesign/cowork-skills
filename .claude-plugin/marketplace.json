@@ -1,0 +1,16 @@
+{
+  "name": "cowork-skills",
+  "owner": {
+    "name": "Jonny Willis",
+    "email": "jonathanw@bigmotive.com"
+  },
+  "description": "UX design skills for Cowork — Figma automation, web research, bookmarks, planning, and skill self-improvement tooling.",
+  "plugins": [
+    {
+      "name": "cowork-skills",
+      "source": ".",
+      "description": "6 skills for UX designers: figma-design, skill-creator, plan-workflow, defuddle-n8n, raindrop-bookmarks, client-resources.",
+      "version": "1.0.0"
+    }
+  ]
+}

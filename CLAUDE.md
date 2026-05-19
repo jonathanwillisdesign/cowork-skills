@@ -27,7 +27,13 @@ cowork-skills/                          ← marketplace repo root
 │   └─ cowork-skills/                   ← the plugin
 │       ├─ .claude-plugin/
 │       │   └─ plugin.json              ← plugin manifest
-│       ├─ skills → ../../skills        ← symlink (Claude Code auto-discovery)
+│       ├─ skills/                      ← directory with individual skill symlinks
+│       │   ├─ client-resources → ../../../skills/client-resources
+│       │   ├─ defuddle-n8n → ../../../skills/defuddle-n8n
+│       │   ├─ figma-design → ../../../skills/figma-design
+│       │   ├─ plan-workflow → ../../../skills/plan-workflow
+│       │   ├─ raindrop-bookmarks → ../../../skills/raindrop-bookmarks
+│       │   └─ skill-creator → ../../../skills/skill-creator
 │       ├─ README.md                    ← marketplace docs
 │       ├─ CHANGELOG.md
 │       └─ LICENSE
@@ -83,21 +89,27 @@ Download `cowork-skills-1.0.0.plugin` from [GitHub Actions artifacts](https://gi
 
 ## Agent-Agnostic Architecture
 
-Skills are kept **agent-agnostic** using a symlink strategy:
+Skills are kept **agent-agnostic** using **individual skill symlinks**:
 
 - **Single source of truth**: All skill files live at `skills/` (root level)
-- **Symlink in plugin**: `plugins/cowork-skills/skills → ../../skills` redirects to root
+- **Individual skill symlinks**: Each skill in `plugins/cowork-skills/skills/` is a symlink to the root-level skill
+  - `plugins/cowork-skills/skills/client-resources → ../../../skills/client-resources`
+  - `plugins/cowork-skills/skills/figma-design → ../../../skills/figma-design`
+  - etc. — one symlink per skill
 - **How it works**: 
-  - Claude Code auto-discovers the `skills/` symlink and loads skills as usual
+  - Claude Code auto-discovers individual skills via symlinks and loads them as usual
   - Other agents (MCP servers, remote agents, custom tools) access skills directly from `skills/` root
   - Both paths read the same files—no duplication, no sync issues
 
-**Why symlink instead of direct references?**
+**Why individual skill symlinks instead of a folder symlink?**
+- **Future multiple plugins**: This repo may grow to include multiple plugins. Each plugin can selectively symlink only the skills it needs:
+  - `plugins/cowork-skills/skills/` could include 6 skills
+  - `plugins/other-plugin/skills/` could include just 2 skills (figma-design, skill-creator)
+  - Plugins share the same skill pool but have independent compositions
 - Claude Code's plugin system expects skills in a `skills/` subdirectory (auto-discovery)
-- A symlink preserves that convention while making skills available at root
 - Any edit to a skill file is immediately visible everywhere (single copy)
 
-This design lets skills be consumed by multiple agents without branching or duplicating code.
+This design creates a **reusable skill library** that multiple plugins can consume independently.
 
 ## Development & Updates
 
